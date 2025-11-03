@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "784359111359",
+    "project_id": "geodent-95ced",
+    "storage_bucket": "geodent-95ced.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:784359111359:android:416ff0a08d2199bfa6240a",
+        "android_client_info": {
+          "package_name": "com.example.locwifitester"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "784359111359-cgvhij838jc6p2f3i039ei7l079s2e80.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAZ5GpCiPRNfvjCVttZmAww65k7Rm4lew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "784359111359-cgvhij838jc6p2f3i039ei7l079s2e80.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
