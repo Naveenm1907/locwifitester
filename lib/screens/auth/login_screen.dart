@@ -72,6 +72,21 @@ class _LoginScreenState extends State<LoginScreen> {
       _isLoading = true;
     });
 
+    // Show timeout message after 10 seconds
+    final timeoutTimer = Future.delayed(const Duration(seconds: 10), () {
+      if (mounted && _isLoading) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text(
+              'This is taking longer than usual. Please wait or check your connection...',
+            ),
+            backgroundColor: Colors.orange,
+            duration: const Duration(seconds: 5),
+          ),
+        );
+      }
+    });
+
     try {
       final email = _emailController.text.trim();
       final name = _nameController.text.trim();
@@ -159,14 +174,19 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     } catch (e) {
       if (mounted) {
+        final errorMessage = e.toString().replaceAll('Exception: ', '');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Login failed: ${e.toString().replaceAll('Exception: ', '')}'),
+            content: Text('Login failed: $errorMessage'),
             backgroundColor: Colors.red,
+            duration: const Duration(seconds: 5),
           ),
         );
       }
     } finally {
+      // Cancel timeout timer
+      timeoutTimer.ignore();
+      
       if (mounted) {
         setState(() {
           _isLoading = false;

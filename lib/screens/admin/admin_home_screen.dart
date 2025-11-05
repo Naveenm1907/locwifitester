@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/app_state.dart';
+import '../../widgets/connection_status_banner.dart';
 import 'room_setup_screen.dart';
 import 'wifi_router_screen.dart';
 import 'rooms_list_screen.dart';
@@ -74,12 +75,18 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
           ),
         ],
       ),
-      body: Consumer<AppState>(
-        builder: (context, appState, child) {
-          // Show loading indicator
-          if (appState.isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
+      body: Column(
+        children: [
+          const ConnectionStatusBanner(),
+          Expanded(
+            child: Consumer<AppState>(
+              builder: (context, appState, child) {
+                // Show loading indicator
+                if (appState.isLoading) {
+                  return const LoadingWithTimeout(
+                    message: 'Loading dashboard...',
+                  );
+                }
 
           // Show error message if any
           if (appState.error != null) {
@@ -130,57 +137,60 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
             );
           }
 
-          return RefreshIndicator(
-            onRefresh: _loadData,
-            child: ListView(
-              padding: const EdgeInsets.all(16),
-              children: [
-                _buildUserCard(appState),
-                const SizedBox(height: 16),
-                _buildStatsCards(appState),
-                const SizedBox(height: 24),
-                _buildActionCard(
-                  title: 'Manage Rooms',
-                  subtitle: '${appState.rooms.length} rooms configured',
-                  icon: Icons.meeting_room,
-                  color: Colors.blue,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const RoomsListScreen()),
-                    );
-                  },
-                ),
-                const SizedBox(height: 12),
-                _buildActionCard(
-                  title: 'Setup New Room',
-                  subtitle: 'Add a new classroom to the system',
-                  icon: Icons.add_location_alt,
-                  color: Colors.green,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const RoomSetupScreen()),
-                    );
-                  },
-                ),
-                const SizedBox(height: 12),
-                _buildActionCard(
-                  title: 'WiFi Routers',
-                  subtitle: '${appState.wifiRouters.length} routers configured',
-                  icon: Icons.router,
-                  color: Colors.orange,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const WiFiRouterScreen()),
-                    );
-                  },
-                ),
-              ],
+                return RefreshIndicator(
+                  onRefresh: _loadData,
+                  child: ListView(
+                    padding: const EdgeInsets.all(16),
+                    children: [
+                      _buildUserCard(appState),
+                      const SizedBox(height: 16),
+                      _buildStatsCards(appState),
+                      const SizedBox(height: 24),
+                      _buildActionCard(
+                        title: 'Manage Rooms',
+                        subtitle: '${appState.rooms.length} rooms configured',
+                        icon: Icons.meeting_room,
+                        color: Colors.blue,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const RoomsListScreen()),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 12),
+                      _buildActionCard(
+                        title: 'Setup New Room',
+                        subtitle: 'Add a new classroom to the system',
+                        icon: Icons.add_location_alt,
+                        color: Colors.green,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const RoomSetupScreen()),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 12),
+                      _buildActionCard(
+                        title: 'WiFi Routers',
+                        subtitle: '${appState.wifiRouters.length} routers configured',
+                        icon: Icons.router,
+                        color: Colors.orange,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const WiFiRouterScreen()),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }

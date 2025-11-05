@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../models/user.dart';
 import '../../providers/app_state.dart';
 import '../../services/firebase_service.dart';
+import '../../widgets/connection_status_banner.dart';
 import 'attendance_screen.dart';
 import '../auth/login_screen.dart';
 
@@ -93,29 +94,36 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
           ),
         ],
       ),
-      body: Consumer<AppState>(
-        builder: (context, appState, child) {
-          return RefreshIndicator(
-            onRefresh: _loadData,
-            child: ListView(
-              padding: const EdgeInsets.all(16),
-              children: [
-                _buildUserCard(appState.currentUser),
-                const SizedBox(height: 16),
-                if (_attendanceStats != null) _buildStatsCard(_attendanceStats!),
-                const SizedBox(height: 16),
-                _buildInfoCard(),
-                const SizedBox(height: 24),
-                const Text(
-                  'Available Rooms',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 12),
-                _buildRoomsList(appState),
-              ],
+      body: Column(
+        children: [
+          const ConnectionStatusBanner(),
+          Expanded(
+            child: Consumer<AppState>(
+              builder: (context, appState, child) {
+                return RefreshIndicator(
+                  onRefresh: _loadData,
+                  child: ListView(
+                    padding: const EdgeInsets.all(16),
+                    children: [
+                      _buildUserCard(appState.currentUser),
+                      const SizedBox(height: 16),
+                      if (_attendanceStats != null) _buildStatsCard(_attendanceStats!),
+                      const SizedBox(height: 16),
+                      _buildInfoCard(),
+                      const SizedBox(height: 24),
+                      const Text(
+                        'Available Rooms',
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 12),
+                      _buildRoomsList(appState),
+                    ],
+                  ),
+                );
+              },
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
